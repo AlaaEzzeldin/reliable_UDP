@@ -1,7 +1,2 @@
-from FSM.simple_device import SimpleDevice
+from FSM.simple_device import NewConnection
 
-device = SimpleDevice()
-device.on_event('device_locked')
-device.on_event('pin_entered')
-device.on_event('device_locked')
-device.on_event('device_locked')

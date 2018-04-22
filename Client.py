@@ -21,5 +21,6 @@ sliding_window_size = Input_list[4]
 print("client input file:" ,"server_IP:", server_IP, ",server_port:", server_port, ",client_port:", client_port,
       ",sliding_window_size:", sliding_window_size)
 
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.sendto(requested_file.encode(), (server_IP, server_port))
