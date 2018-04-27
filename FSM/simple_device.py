@@ -5,6 +5,10 @@ from FSM.server_states import Waiting_for_call
 
 class NewConnection(object):
     def __init__(self, device_type):
+        """
+
+        :rtype: object
+        """
         # Start with a default state.
         if device_type == 'server':
             self.state = Waiting_for_call()

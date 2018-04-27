@@ -1,0 +1,28 @@
+import _struct
+
+protocol_type = input("specify your protocol(SAW,GBN or SR)")  # configure the protocol type
+print("Selected protocol is : ", protocol_type)
+
+# set packets formats
+data_packet_format = "!III500s"  # I for unsigned int, S for string
+ack_packet_format = "!II"
+print(_struct.calcsize(data_packet_format))  # check the size of Data packet (512 bytes)
+print(_struct.calcsize(ack_packet_format))
+
+def make_data_packet(check_sum, seq_number, length, data):
+    global data_packet
+    if protocol_type == "sr":
+        data_packet = _struct.pack(data_packet_format, check_sum, length, seq_number, data)
+
+    return data_packet
+
+
+def make_ack_packet(check_sum, seq_number):
+    global ack_packet
+    if protocol_type == "sr":
+        ack_packet = _struct.pack(check_sum, seq_number)
+
+    return ack_packet
+
+
+print(make_data_packet())

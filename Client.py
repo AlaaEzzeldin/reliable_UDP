@@ -11,7 +11,7 @@ import socket
 
 '''
 # reading client input file
-client_input_file = open("client_input.txt", "r")
+client_input_file = open("Data_files\client_input.txt", "r")
 Input_list = client_input_file.read().splitlines()
 server_IP = Input_list[0]
 server_port = int(Input_list[1])
