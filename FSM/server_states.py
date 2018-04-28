@@ -21,7 +21,7 @@ class Waiting_for_call_0(State):
             text = send_file.read(500)
             if utility.end_of_file(text):  # test if the file ends
                 print("whaaaaaaat")
-                #return 3
+                return 3
             data_packet = utility.make_data_packet(0, 0, 0, text.encode())
             sock.sendto(data_packet, ('192.168.113.1', 50000))  # extracting client data when he make the request
             send_time = time.time()
@@ -46,7 +46,7 @@ class Waiting_for_call_1(State):
         text = send_file.read(500)
         if utility.end_of_file(text):  # test if the file ends
             print("whaaaaaaat")
-            #return 3
+            return 3
         data_packet = utility.make_data_packet(0, 0, 1, text.encode())
         sock.sendto(data_packet, ('192.168.113.1', 50000))  # extracting client data when he make the request
         send_time = time.time()

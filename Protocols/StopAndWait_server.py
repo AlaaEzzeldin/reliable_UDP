@@ -5,15 +5,11 @@ from server import waiting_for_new_request
 file, address = waiting_for_new_request()
 send_file = open(file)
 server = NewConnection('server')
-server.on_event((send_file, address))
-server.on_event((send_file, address))
-server.on_event((send_file, address))
-server.on_event((send_file, address))
-server.on_event((send_file, address))
-server.on_event((send_file, address))
-server.on_event((send_file, address))
-server.on_event((send_file, address))
-server.on_event((send_file, address))
-server.on_event((send_file, address))
-server.on_event((send_file, address))
+
+while 1:
+    server.on_event((send_file, address))
+    server.on_event((send_file, address))
+    server.on_event((send_file, address))
+    server.on_event((send_file, address))
+
 send_file.close()

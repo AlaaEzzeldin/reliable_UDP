@@ -9,6 +9,6 @@ socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 socket.bind(('192.168.113.1', 50000))
 
 cl = NewConnection('client')
-cl.on_event(socket)
-cl.on_event(socket)
-\
+while 1:
+    cl.on_event(socket)
+    cl.on_event(socket)
