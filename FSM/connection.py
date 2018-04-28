@@ -1,19 +1,15 @@
-# simple_device.py
-from FSM.Client_states import Waiting_for_callFrom_below
-from FSM.server_states import Waiting_for_call
+# connection.py
+from FSM.Client_states import Waiting_for_0_From_below
+from FSM.server_states import Waiting_for_call_0
 
 
 class NewConnection(object):
     def __init__(self, device_type):
-        """
-
-        :rtype: object
-        """
         # Start with a default state.
         if device_type == 'server':
-            self.state = Waiting_for_call()
+            self.state = Waiting_for_call_0()
         elif device_type == 'client':
-            self.state = Waiting_for_callFrom_below()
+            self.state = Waiting_for_0_From_below()
 
     def on_event(self, event):
         # The next state will be the result of the on_event function.

@@ -1,5 +1,5 @@
-192.168.113.1
-12345
-12345
-transferred_data.txt
+127.0.0.1
+60000
+50000
+Data_files\requested_file
 1

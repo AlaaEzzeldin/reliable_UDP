@@ -1,1 +1,21 @@
-Hello world!
+The electrical telegraph systems, developed in the early 19th century, used simple electrical signals to sent text messages. In the late 19th century, the wireless telegraphy was developed using radio waves.
+
+In 1933, the German Reichspost (Reich postal service) introduced the first "telex" service.[2][3]
+
+The University of Hawaii began using radio to send digital information as early as 1971, using ALOHAnet.
+[citation needed] Friedhelm Hillebrand conceptualised SMS in 1984 while working for Deutsche Telekom. Sitting at a typewriter at home,
+Hillebrand typed out random sentences and counted every letter, number, punctuation, and space. Almost every time, the messages contained fewer than 160 characters,
+ thus giving the basis for the limit one could type via text messaging.[4] With Bernard Ghillebaert of France Télécom, he developed a proposal for the GSM (Groupe Spécial Mobile) meeting in February 1985 in Oslo.[5] The first technical solution evolved in a GSM subgroup under the leadership of Finn Trosby. I
+ t was further developed under the leadership of Kevin Holley and Ian Harris (see Short Message Service).[6] SMS forms an integral part of SS7 (Signalling System No. 7).[7] Under SS7, it is a "state" with a 160 character data, coded in the ITU-T "T.56" tex
+ t format, that has a "sequence lead in" to determine different language codes, and may have special character codes that permits, for example, sending simple graphs as text. This was part of ISDN (Integrated Services Digital Network) and since GSM is based on this, made its way to the mo
+ bile phone. Messages could be sent and received on ISDN phones, and these can send SMS to any GSM phone. The possibility of doing something is one thing,
+implementing it another, but systems existed from 1988 that sent SMS messages to mobile phones[citation needed] (compare ND-NOTIS).
+SMS messaging was used for the first time on 3 December 1992,[8] when Neil Papworth, a 22-year-old test engineer for Sema Group in the UK[9]
+(now Airwide Solutions),[10] used a personal computer to send the text message "Merry Christmas" via the Vodafone network to the phone of Richard Jarvis[11][12] who
+was at a party in Newbury, Berkshire which had been organised to celebrate the event. Modern SMS text messaging is[by whom?] usually messaging from one mobile phone to
+another mobile phone. Finnish Radiolinja became the first network to offer a commercial person-to-person SMS text messaging service in 1994. When Radiolinja's
+domestic competitor, Telecom Finland (now part of TeliaSonera) also launched SMS text messaging in 1995 and the two networks offered cross-network SMS functionality, Finland became the first nation where SMS text messaging was offered on a competitive
+as well as on a commercial basis. GSM was allowed
+[by whom?] in the United States and the radio frequencies were blocked and awarded to US "Carriers" to use US technology. Hence there is no "development" in the US in mobile messaging service. The GSM in the US had to use a frequency allocated for private communication services (PCS) – what the ITU frequency régime had blocked for DECT – Digital Enhanced Cordless Telecommunications – 1000-feet range
+ picocell, but survived. American Personal Communications (APC), the first GSM carrier in America, provided the first text-messaging service in the United States. Sprint Telecommunications Venture, a partnership of Sprint Corp. and three large cable-TV companies, owned 49 percent of APC. The Sprint venture was the largest single buyer at a government-run spectr
+ um auction that raised $7.7 billion in 2005 for PCS licenses. APC operated under the brand name of Sprint Spectrum and launched its service on November 15, 1995 in Washington, D.C. and in Baltimore, Maryland. Vice President Al Gore in Washington, D.C. made the initial phone-call to launch the network, calling Mayor Kurt Schmoke in Baltimore.[13]
