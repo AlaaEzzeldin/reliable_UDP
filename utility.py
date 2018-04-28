@@ -4,11 +4,13 @@ from Protocols.configure import protocol_type
 # set packets formats
 data_packet_format = "!III500s"  # I for unsigned int, S for string
 ack_packet_format = "!II"
-#print(struct.calcsize(data_packet_format))  # check the size of Data packet (512 bytes)
-#print(struct.calcsize(ack_packet_format))
 
 
-def make_data_packet(check_sum, length,seq_number, data):
+# print(struct.calcsize(data_packet_format))  # check the size of Data packet (512 bytes)
+# print(struct.calcsize(ack_packet_format))
+
+
+def make_data_packet(check_sum, length, seq_number, data):
     global data_packet
     if protocol_type == "sr":
         data_packet = struct.pack(data_packet_format, check_sum, length, seq_number, data)
@@ -34,4 +36,12 @@ def extract_data(packet):
 def expected_seqNumber(expected_seq, received_seq):
     if expected_seq == received_seq:
         return 1
-    else: return 0
+    else:
+        return 0
+
+
+def end_of_file(text):
+    if text == "":
+        return 1
+    else:
+        return 0

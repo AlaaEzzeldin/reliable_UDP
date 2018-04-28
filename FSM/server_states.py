@@ -16,10 +16,13 @@ os.chdir("C:\\Files\\Engineering\\colllege\\term 8\\Networks\\projects\\reliable
 class Waiting_for_call_0(State):
     def on_event(self, event):
         if 1:
-            file, address = event
+            send_file, address = event
             global send_time, sock
-            send_file = open(file)
-            data_packet = utility.make_data_packet(0, 0, 0, send_file.read(500).encode())
+            text = send_file.read(500)
+            if utility.end_of_file(text):  # test if the file ends
+                print("whaaaaaaat")
+                #return 3
+            data_packet = utility.make_data_packet(0, 0, 0, text.encode())
             sock.sendto(data_packet, ('192.168.113.1', 50000))  # extracting client data when he make the request
             send_time = time.time()
             return Waiting_for_ACK_0()
@@ -38,13 +41,15 @@ class Waiting_for_ACK_0(State):
 
 class Waiting_for_call_1(State):
     def on_event(self, event):
-        file, address = event
+        send_file, address = event
         global send_time, sock
-        send_file = open(file)
-        data_packet = utility.make_data_packet(0, 0, 1, send_file.read(500).encode())
+        text = send_file.read(500)
+        if utility.end_of_file(text):  # test if the file ends
+            print("whaaaaaaat")
+            #return 3
+        data_packet = utility.make_data_packet(0, 0, 1, text.encode())
         sock.sendto(data_packet, ('192.168.113.1', 50000))  # extracting client data when he make the request
         send_time = time.time()
-        print("whaaaaaaat")
         return Waiting_for_ACK_1()
     # return self
 
@@ -52,10 +57,8 @@ class Waiting_for_call_1(State):
 class Waiting_for_ACK_1(State):
     def on_event(self, event):
         global sock
-
         received_packet, client_address = sock.recvfrom(8)
         check_sum, seq_number = utility.extract_data(received_packet)  # extract the ACK sequence number
-
         if utility.expected_seqNumber(1, seq_number):
             return Waiting_for_call_0()
         return self
