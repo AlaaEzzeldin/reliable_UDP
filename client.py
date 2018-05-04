@@ -19,10 +19,9 @@ server_IP = Input_list[0]
 server_port = int(Input_list[1])
 client_port = int(Input_list[2])
 requested_file = Input_list[3]
-sliding_window_size = Input_list[4]
+sliding_window_size = int(Input_list[4])
 # print("client input file:" ,"server_IP:", server_IP, ",server_port:", server_port, ",client_port:", client_port,
 #      ",sliding_window_size:", sliding_window_size)
 
-client_ip = socket.gethostname()
-
-client_received_file = "C:\\Files\\Engineering\\colllege\\term 8\\Networks\\projects\\reliable_UDP\\Data_files\\client_received_file.txt"
+client_ip = '192.168.1.3'
+client_received_file = "C:\\Files\\Engineering\\colllege\\term 8\\Networks\\projects\\reliable_UDP\\Data_files\\client_received_file"

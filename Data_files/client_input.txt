@@ -1,5 +1,5 @@
 127.0.0.1
 60000
 50000
-Data_files\requested_file
-1
+C:\Files\Engineering\colllege\term 8\Networks\projects\reliable_UDP\Data_files\requested_file.txt
+5

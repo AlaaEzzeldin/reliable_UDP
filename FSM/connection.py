@@ -14,3 +14,4 @@ class NewConnection(object):
     def on_event(self, event):
         # The next state will be the result of the on_event function.
         self.state = self.state.on_event(event)
+

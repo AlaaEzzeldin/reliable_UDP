@@ -1,5 +1,5 @@
 import struct
-from Protocols.configure import protocol_type
+from Protocols.settings import protocol_type
 
 # set packets formats
 data_packet_format = "!III500s"  # I for unsigned int, S for string
