@@ -2,7 +2,7 @@
 import socket
 import os
 
-os.chdir("C:\\Files\\Engineering\\colllege\\term 8\\Networks\\projects")
+os.chdir("C:\\Files\\Engineering\\colllege\\term 8\\Networks\\projects\\reliable_UDP\\Data_files")  # change directory
 # needed data in the input file
 '''
  IP address of server.
@@ -13,7 +13,7 @@ os.chdir("C:\\Files\\Engineering\\colllege\\term 8\\Networks\\projects")
 
 '''
 # reading client input file
-client_input_file = open("reliable_UDP\Data_files\client_input.txt", "r")
+client_input_file = open("client_input.txt", "r")
 Input_list = client_input_file.read().splitlines()
 server_IP = Input_list[0]
 server_port = int(Input_list[1])
@@ -24,4 +24,4 @@ sliding_window_size = int(Input_list[4])
 #      ",sliding_window_size:", sliding_window_size)
 
 client_ip = '192.168.1.3'
-client_received_file = "C:\\Files\\Engineering\\colllege\\term 8\\Networks\\projects\\reliable_UDP\\Data_files\\client_received_file"
+client_received_file = "client_received_file"
