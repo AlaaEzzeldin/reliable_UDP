@@ -1,0 +1,18 @@
+Waiting for client...
+('Requested file', b'requested_file.txt', 'from', ('127.0.0.1', 50000), '\n')send packet with sequence number0
+buffer now includes:0
+send packet with sequence number1
+buffer now includes:1
+send packet with sequence number2
+buffer now includes:2
+send packet with sequence number3
+buffer now includes:3
+send packet with sequence number4
+buffer now includes:4
+send packet with sequence number5
+buffer now includes:5
+send packet with sequence number6
+buffer now includes:6
+send packet with sequence number7
+buffer now includes:7
+End file transmitted file

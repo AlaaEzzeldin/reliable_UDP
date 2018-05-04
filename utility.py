@@ -45,3 +45,15 @@ def end_of_file(text):
         return 1
     else:
         return 0
+
+
+class Packet(object):
+    "Stores name and place pairs"
+
+    def __init__(self, seq_number, data_packet, status):
+        self.seq_number = seq_number
+        self.data_packet = data_packet
+        self.status = status
+
+
+Buffer_list = []

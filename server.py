@@ -1,10 +1,10 @@
 import socket
 import os
 
-os.chdir("C:\\Files\\Engineering\\colllege\\term 8\\Networks\\projects")  # change directory
+os.chdir("C:\\Files\\Engineering\\colllege\\term 8\\Networks\\projects\\reliable_UDP\\Data_files")  # change directory
 
 # reading input file
-server_input_file = open("reliable_UDP\Data_files\server_input.txt", "r")
+server_input_file = open("server_input.txt", "r")
 Input_list = server_input_file.read().splitlines()
 server_port = int(Input_list[0])
 Max_sending_window_size = int(Input_list[1])
