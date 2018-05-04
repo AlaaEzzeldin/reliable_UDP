@@ -6,27 +6,27 @@ import time
 import os
 from FSM.state import State
 
-#send_time
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 os.chdir("C:\\Files\\Engineering\\colllege\\term 8\\Networks\\projects\\reliable_UDP")  # change directory
 
 
-# Start of our states
-
-
+start_time = time.time()
 class Waiting_for_call_0(State):
     def on_event(self, event):
         if 1:
             send_file, address = event
-            global send_time, sock
+            global sock
             text = send_file.read(500)
-            if utility.end_of_file(text):  # test if the file ends
+            if text== b'':  # test if the file ends
                 print("End OF File")
                 send_file.close()
-                return 0
+                end_time = time.time()
+                exec_time = end_time - start_time
+                print("Execution time= ", str(exec_time), "secs")
+                exit(0)
             data_packet = utility.make_data_packet(0, 0, 0, text)
-            sock.sendto(data_packet, ('192.168.113.1', 50000))  # extracting client data when he make the request
-            send_time = time.time()
+            sock.sendto(data_packet, address)  # extracting client data when he make the request
             return Waiting_for_ACK_0()
         return self
 
@@ -46,12 +46,14 @@ class Waiting_for_call_1(State):
         send_file, address = event
         global send_time, sock
         text = send_file.read(500)
-        if utility.end_of_file(text):  # test if the file ends
+        if text ==b'':  # test if the file ends
             print("End OF File")
-            send_file.close()
-            return 0
+            end_time = time.time()
+            exec_time = end_time - start_time
+            print("Execution time= ", str(exec_time), "secs")
+            exit(0)
         data_packet = utility.make_data_packet(0, 0, 1, text)
-        sock.sendto(data_packet, ('192.168.113.1', 50000))  # extracting client data when he make the request
+        sock.sendto(data_packet, address)  # extracting client data when he make the request
         send_time = time.time()
         return Waiting_for_ACK_1()
     # return self

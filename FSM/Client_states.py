@@ -9,7 +9,6 @@ class Waiting_for_0_From_below(State):
         #if event == 0:
         sock = event
         received_packet, server_address = sock.recvfrom(512)
-        print(server_address)
         check_sum, length, seq_number, data = utility.extract_data(received_packet)  # extract the data
         received_file = open(client_received_file, "ab")
         received_file.write(data)  # deliver the data to the upper layer
