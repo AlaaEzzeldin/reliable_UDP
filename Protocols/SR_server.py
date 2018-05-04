@@ -39,7 +39,7 @@ while 1:
 
     if next_Seq_number < (int(base) + N):  # the next seq number packet is within the window range
         text = send_file.read(512)
-        if utility.end_of_file(text.decode()): # EOF
+        if text == "":  # EOF
             EOF = 1
             write_log("Server:   End file transmitted file")
             break
