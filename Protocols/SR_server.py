@@ -38,9 +38,8 @@ def mark_as_packed(seq_number):
 while 1:
 
     if next_Seq_number < (int(base) + N):  # the next seq number packet is within the window range
-        text = send_file.read(512)
-
-        if text == "":  # EOF
+        text = send_file.read(500)
+        if text == b'':  # EOF
             EOF = 1
             write_log("Server:   End file transmitted file")
             break

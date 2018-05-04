@@ -25,3 +25,5 @@ sliding_window_size = int(Input_list[4])
 
 client_ip = '192.168.1.3'
 client_received_file = "client_received_file"
+received_file = open(client_received_file, "wb")
+
