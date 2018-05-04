@@ -1,18 +1,34 @@
-Waiting for client...
-('Requested file', b'requested_file.txt', 'from', ('127.0.0.1', 50000), '\n')send packet with sequence number0
-buffer now includes:0
-send packet with sequence number1
-buffer now includes:1
-send packet with sequence number2
-buffer now includes:2
-send packet with sequence number3
-buffer now includes:3
-send packet with sequence number4
-buffer now includes:4
-send packet with sequence number5
-buffer now includes:5
-send packet with sequence number6
-buffer now includes:6
-send packet with sequence number7
-buffer now includes:7
-End file transmitted file
+('Server:   Requested file', b'requested_file.txt', 'from', ('127.0.0.1', 50000))
+Server:   send packet with sequence number0
+Client:   received packet with seq_number= 0
+Server:   buffer now includes:0
+Server:   packet with sequence number= 0  acked
+  0
+Client:   received packet with seq_number= 1
+Server:   buffer now includes:1
+Client:   ack is sent for packet with seq_number=  1
+Client:   received packet with seq_number= 2
+Server:   buffer now includes:2
+Client:   ack is sent for packet with seq_number=  2
+Server:   send packet with sequence number3
+Client:   received packet with seq_number= 3
+Server:   buffer now includes:3
+Server:   packet with sequence number= 3  acked
+  3
+Client:   received packet with seq_number= 4
+Server:   buffer now includes:4
+Client:   ack is sent for packet with seq_number=  4
+Client:   received packet with seq_number= 5
+Server:   send packet with sequence number5
+Server:   buffer now includes:5
+Client:   ack is sent for packet with seq_number=  5
+Server:   packet with sequence number= 5  acked
+Client:   received packet with seq_number= 6
+Server:   buffer now includes:6
+Client:   ack is sent for packet with seq_number=  6
+Server:   send packet with sequence number7
+
+Server:   buffer now includes:7
+Client:   ack is sent for packet with seq_number=  7
+Server:   packet with sequence number= 7  acked
+Server:   End file transmitted file

@@ -1,6 +1,8 @@
 import socket
 import os
 
+from Protocols.settings import write_log
+
 os.chdir("C:\\Files\\Engineering\\colllege\\term 8\\Networks\\projects\\reliable_UDP\\Data_files")  # change directory
 
 # reading input file
@@ -18,12 +20,10 @@ loss_Probability = int(Input_list[3])
 server_ip = '127.0.0.1'
 def waiting_for_new_request():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    server_ip = '127.0.0.1'
-    sock.bind((server_ip, server_port))
-    print("Waiting for client...")
+    sock.bind(('', server_port))
+    write_log("Waiting for client...\n")
     requested_file, client_address = sock.recvfrom(100)
-    print("Received Messages:", requested_file, "from", client_address)
-    print(requested_file)
+    write_log(str(("Server:   Requested file", requested_file, "from", client_address)))
     return requested_file, client_address
 
 
