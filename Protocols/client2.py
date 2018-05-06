@@ -17,6 +17,7 @@ EOF =0
 # receiving data
 
 
+
 while 1:
     received_packet, server_address = sock.recvfrom(512)
     if received_packet == "":

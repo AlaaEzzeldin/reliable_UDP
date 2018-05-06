@@ -1,5 +1,6 @@
 import struct
 from Protocols.settings import protocol_type
+import time
 
 # set packets formats
 data_packet_format = "!III500s"  # I for unsigned int, S for string
@@ -40,11 +41,13 @@ def expected_seqNumber(expected_seq, received_seq):
         return 0
 
 
-def end_of_file(text):
-    if text == "":
-        return 1
-    else:
-        return 0
+def end_of_file(start_time):
+        print("End OF File")
+        end_time = time.time()
+        exec_time = end_time - start_time
+        print("Execution time= ", str(exec_time), "secs")
+        exit(0)
+
 
 
 class Packet(object):
