@@ -20,6 +20,8 @@ class Waiting_for_call_0(State):
             global number_of_packet, start_time, buffer_one_packet
             text = send_file.read(500)
             if text == b'':  # test if the file ends
+                data_packet = utility.make_data_packet(utility.get_checksum_server("11111eof1111"), 0, 1, text)
+                send_socket.sendto(data_packet, address)
                 utility.end_of_file(start_time)
                 send_file.close()
             else:
@@ -59,6 +61,8 @@ class Waiting_for_call_1(State):
         text = send_file.read(500)
         if text == b'':  # test if the file ends
             send_file.close()
+            data_packet = utility.make_data_packet(utility.get_checksum_server("11111eof1111", 0, 1, text))
+            send_socket.sendto(data_packet, address)
             utility.end_of_file(start_time)
         else:
             data_packet = utility.make_data_packet(utility.get_checksum_server(str(text)), 0, 1, text)

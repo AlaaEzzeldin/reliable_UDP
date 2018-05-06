@@ -1,6 +1,8 @@
 import socket
 import threading
 import time
+from concurrent.futures import thread
+
 import utility
 from Protocols.settings import write_log
 from server import Max_sending_window_size, waiting_for_new_request, loss_Probability, random_SeedValue
@@ -11,15 +13,6 @@ EOF: bool = False
 chunk_size = 500
 Lock_packet_sending = threading.Lock()
 base = 0
-
-'''def send_packet(text, curr_seq_number, socket_server):
-    data_packet = utility.make_data_packet(0, text.__len__(), curr_seq_number, text)
-    socket_server.sendto(data_packet, client_address)
-    write_log("".join(("Server:   send packet with sequence number", str(curr_seq_number))))
-    new_dict = {"seq_number": curr_seq_number, 'packet': data_packet, 'status': 'unacked', "send_time": time.time()}
-    Buffer_list.append(new_dict)
-    write_log("".join(("Server:   buffer now includes:", str(curr_seq_number))))
-'''
 
 
 class thread_sender(threading.Thread):
@@ -117,9 +110,6 @@ class ack_receiver(threading.Thread):
                 Lock_packet_sending.release()
 
 
-# waiting for new request
-requested_file, client_address = waiting_for_new_request()
-
 
 def serve_new_client(requested_file):
     send_file = open(requested_file, "rb")
@@ -142,4 +132,12 @@ def serve_new_client(requested_file):
     print(exec_time)
 
 
-serve_new_client(requested_file)
+while 1:
+    # waiting for new request
+    requested_file, client_address = waiting_for_new_request()
+    serve_new_client(requested_file)
+
+    thread.start_new_thread(serve_new_client, requested_file)
+    thread.join()
+
+

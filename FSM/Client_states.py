@@ -14,7 +14,10 @@ class Waiting_for_0_From_below(State):
             sock = event
             received_packet, server_address = sock.recvfrom(512)
             check_sum, length, seq_number, data = utility.extract_data(received_packet)  # extract the data
-
+            if data  == b'11111eof1111':
+                received_file.close()
+                print("all the file has been received ^___^")
+                exit(0)
             # if correct & expected sequence number
             if utility.expected_seqNumber(0, seq_number):
 
@@ -43,7 +46,10 @@ class Waiting_for_1_From_below(State):
             sock = event
             received_packet, server_address = sock.recvfrom(512)
             check_sum, length, seq_number, data = utility.extract_data(received_packet)  # extract the data
-
+            if data  == b'11111eof1111':
+                received_file.close()
+                print("all the file has been received ^___^")
+                exit(0)
             # if correct & expected sequence number & check_sum == (utility.get_checksum_client(str(data)) ^ 0xffff):
             if utility.expected_seqNumber(1, seq_number):
                 # deliver the data to the upper layer
