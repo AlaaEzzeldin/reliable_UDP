@@ -49,7 +49,6 @@ def end_of_file(start_time):
         exit(0)
 
 
-
 class Packet(object):
     "Stores name and place pairs"
 
@@ -57,6 +56,41 @@ class Packet(object):
         self.seq_number = seq_number
         self.data_packet = data_packet
         self.status = status
+
+
+def get_checksum_server(data):
+    i = len(data)
+    # Handle the case where the length is odd
+    if i & 1:
+        i -= 1
+        sum = ord(data[i])
+    else:
+        sum = 0
+    # Iterate through chars two by two and sum their byte values
+    while i > 0:
+        i -= 2
+        sum += (ord(data[i + 1]) << 8) + ord(data[i])
+    # Wrap overflow around
+    sum = (sum >> 16) + (sum & 0xffff)
+    result = (~ sum) & 0xffff  # One's complement
+    return result
+
+
+def get_checksum_client(data):
+    i = len(data)
+    # Handle the case where the length is odd
+    if i & 1:
+        i -= 1
+        sum = ord(data[i])
+    else:
+        sum = 0
+    # Iterate through chars two by two and sum their byte values
+    while i > 0:
+        i -= 2
+        sum += (ord(data[i + 1]) << 8) + ord(data[i])
+    # Wrap overflow around
+    sum = (sum >> 16) + (sum & 0xffff)
+    return sum
 
 
 Buffer_list = []

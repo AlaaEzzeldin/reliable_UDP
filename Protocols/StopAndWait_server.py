@@ -1,3 +1,5 @@
+import socket
+
 from FSM.connection import NewConnection
 from server import waiting_for_new_request, Max_sending_window_size ,loss_Probability, random_SeedValue, chunk_size
 from simulation_helper import get_must_dropped_packets, print_dropped_seq
@@ -16,9 +18,15 @@ elif Max_sending_window_size == 1:
 
     # establish a simulation environment
     list_of_dropped = get_must_dropped_packets(file, loss_Probability, chunk_size, random_SeedValue)
-    print_dropped_seq(list_of_dropped)
+    #print_dropped_seq(list_of_dropped)
+
+    socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    socket.bind(('', 54321))
+
     while 1:
-        server.on_event((requested_file, address, list_of_dropped))
+        server.on_event((requested_file, address, list_of_dropped, socket))
+
+
 
 
 
