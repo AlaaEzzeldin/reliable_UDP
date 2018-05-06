@@ -1,108 +1,145 @@
-from server import Max_sending_window_size, waiting_for_new_request, loss_Probability, random_SeedValue
-import utility
 import socket
-from Protocols.settings import write_log, log_file
-import time
-from simulation_helper import get_must_dropped_packets, get_decision,print_dropped_seq
 import threading
+import time
+import utility
+from Protocols.settings import write_log
+from server import Max_sending_window_size, waiting_for_new_request, loss_Probability, random_SeedValue
+from simulation_helper import get_must_dropped_packets, get_decision, print_dropped_seq
 
-
-# initialize some parameters
-base: int = 0
-chunk_size = 500
-next_Seq_number = 0
-N = Max_sending_window_size
-Buffer_list = []
+max_window_size = Max_sending_window_size
 EOF: bool = False
+chunk_size = 500
+Lock_packet_sending = threading.Lock()
+base = 0
+
+'''def send_packet(text, curr_seq_number, socket_server):
+    data_packet = utility.make_data_packet(0, text.__len__(), curr_seq_number, text)
+    socket_server.sendto(data_packet, client_address)
+    write_log("".join(("Server:   send packet with sequence number", str(curr_seq_number))))
+    new_dict = {"seq_number": curr_seq_number, 'packet': data_packet, 'status': 'unacked', "send_time": time.time()}
+    Buffer_list.append(new_dict)
+    write_log("".join(("Server:   buffer now includes:", str(curr_seq_number))))
+'''
+
+
+class thread_sender(threading.Thread):
+
+    def __init__(self, requested_file, socket_server, list_of_dropped, max_window_size):
+        threading.Thread.__init__(self)
+        self.socket_server = socket_server
+        self.max_window_size = max_window_size
+        self.requested_file = requested_file
+        self.list_of_dropped_And_corrupted = list_of_dropped
+        self.start()
+
+    def run(self):
+        global base, Lock_packet_sending
+        curr_seq_number = 0
+        EOF = False
+        while not EOF:
+            Lock_packet_sending.acquire()
+            while curr_seq_number < (
+                    int(base) + max_window_size):  # the next seq number packet is within the window range
+                try:
+                    text = self.requested_file.read(500)
+                except:
+                    IOError
+                    print("can't read file\n")
+                if text == b'':  # EOF
+                    EOF = True
+                    write_log("Server:   End file transmitted file")
+                    curr_seq_number -= 1
+                    break
+                else:
+                    if get_decision(self.list_of_dropped_And_corrupted,
+                                        curr_seq_number):  # packet lost or corrupted
+                        data_packet = utility.make_data_packet(0, text.__len__(), curr_seq_number, text)
+                        self.socket_server.sendto(data_packet, client_address)
+                        # write_log("".join(("Server:   buffer now includes:", str(curr_seq_number))))
+                        curr_seq_number += 1
+                    else:
+                        curr_seq_number += 1
+                        print("dropped", curr_seq_number)
+                    write_log("".join(("Server:   send packet with sequence number", str(curr_seq_number))))
+                    new_dict = {"seq_number": curr_seq_number, 'packet': data_packet, 'status': 'unacked',
+                                    "send_time": time.time()}
+                    utility.Buffer_list.append(new_dict)
+
+            Lock_packet_sending.release()
+
+            if EOF:
+                break
+        data_packet = b'11111eof1111'  # pattern to detect the end of file
+        self.socket_server.sendto(data_packet, client_address)
+
+
+class ack_receiver(threading.Thread):
+    def __init__(self, socket_server, list_of_dropped, max_window_size):
+        threading.Thread.__init__(self)
+        threading.Thread.__init__(self)
+        self.socket_server = socket_server
+        self.max_window_size = max_window_size
+        self.dropped_packets = list_of_dropped
+        self.start()
+
+   # def retransimission(self, list, curr_seq_number):
+
+
+
+    def run(self):
+        global base, Lock_packet_sending
+        current_seq_number = 0
+        while base + self.max_window_size > current_seq_number:
+            received_packet, client_address = self.socket_server.recvfrom(8)
+            if received_packet != b'':  # if ACK
+                print(received_packet)
+                check_sum, ack_seq_number = utility.extract_data(received_packet)  # extract the ACK sequence number
+                print("seq=", ack_seq_number)
+                utility.mark_as_packed(ack_seq_number)  # mark this packet as acked
+                write_log("".join(("Server:   packet with sequence number= ", str(ack_seq_number), "  ",
+                                   utility.Buffer_list[ack_seq_number]["status"])))
+                Lock_packet_sending.acquire()
+                base = utility.find_min_unacked(ack_seq_number)
+                '''
+                                buffer = utility.find_if_un_ack(base, max_window_size)
+                print(buffer, base, ack_seq_number)
+                for i in range(len(buffer)):
+                    data_packet = buffer[i]['packet']
+                    Lock_packet_sending.acquire()
+                    self.socket_server.sendto(data_packet, client_address)
+                    write_log("".join(("Server:   retransmit packet with sequence number", str(buffer[i]['seq_number']))))
+                    buffer[i]['status'] = "acked"
+                    # write_log("".join(("Server:   buffer now includes:", str(curr_seq_number))))
+                    Lock_packet_sending.release()
+                '''
+
+
+                Lock_packet_sending.release()
+
 
 # waiting for new request
 requested_file, client_address = waiting_for_new_request()
-send_file = open(requested_file, "rb")
-
-# establish a simulation environment
-list_of_dropped = get_must_dropped_packets(requested_file, loss_Probability, chunk_size, random_SeedValue)
-print_dropped_seq(list_of_dropped)
-
-# create new socket to send the data
-socket_server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # create new socket for this client
-socket_server.bind(('', 12345))
-ack_seq_number = -1
 
 
-def check_window_is_Acked():
-    for i in range(len(Buffer_list)):
-        if Buffer_list[i]["status"] == "unacked":
-            return False
-        else:
-            return True
-    return False
+def serve_new_client(requested_file):
+    send_file = open(requested_file, "rb")
+    # establish a simulation environment
+    list_of_dropped = get_must_dropped_packets(requested_file, loss_Probability, chunk_size, random_SeedValue)
+    print_dropped_seq(list_of_dropped)
 
+    # create new socket to send the data
+    socket_server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # create new socket for this client
+    socket_server.bind(('', 12345))
 
-def find_min_unacked():
-    for i in range(len(Buffer_list)):
-        if Buffer_list[i]["status"] == "unacked":  # if there exist unacked datagrams in the window
-            smallest_unacked = Buffer_list[i]["seq_number"]
-        else:  # all datagrams in the window are acked
-            smallest_unacked = next_Seq_number
-        # print("smallest=", smallest_unacked)
-        return int(smallest_unacked)
+    start_time = time.time()
+    sender_thread = thread_sender(send_file, socket_server, list_of_dropped, max_window_size)
+    thread_ack_receiver = ack_receiver(socket_server, list_of_dropped, max_window_size)
 
-
-def mark_as_packed(seq_number):
-    for i in range(len(Buffer_list)):
-        if seq_number == Buffer_list[i]["seq_number"]:
-            Buffer_list[i]["status"] = "acked"
-
-def end_of_file(start_time):
-    log_file.close()
+    sender_thread.join()
+    thread_ack_receiver.join()
     end_time = time.time()
     exec_time = end_time - start_time
-    write_log("".join(("Execution time= ", str(exec_time), "secs")))
-    exit(0)
+    print(exec_time)
 
 
-def send_packet():
-    data_packet = utility.make_data_packet(0, text.__len__(), next_Seq_number, text)
-    socket_server.sendto(data_packet, client_address)
-    write_log("".join(("Server:   send packet with sequence number", str(next_Seq_number))))
-    new_dict = {"seq_number": next_Seq_number, 'packet': data_packet, 'status': 'unacked'}
-    Buffer_list.append(new_dict)
-    write_log("".join(("Server:   buffer now includes:", str(next_Seq_number))))
-
-
-def receive_packet(pr, yalahwy):
-    global ack_seq_number
-    received_packet, client_address = socket_server.recvfrom(8)
-    if received_packet != "":  # if ACK
-        check_sum, ack_seq_number = utility.extract_data(received_packet)  # extract the ACK sequence number
-        print("seq=", ack_seq_number)
-        mark_as_packed(int(ack_seq_number))  # mark this packet as acked
-        write_log("".join(("Server:   packet with sequence number= ", str(ack_seq_number), "  ",
-                           Buffer_list[ack_seq_number]["status"])))
-
-
-
-while 1:
-    if next_Seq_number < (int(base) + N):  # the next seq number packet is within the window range
-        text = send_file.read(500)
-        if text == b'':  # EOF
-            EOF = True
-            write_log("Server:   End file transmitted file")
-            last_seq_number = next_Seq_number - 1
-        else:
-
-            if next_Seq_number == 0:
-                start_time = time.time()
-
-            if get_decision(list_of_dropped,next_Seq_number):  # drop or not
-                print("seq is dropped", next_Seq_number)
-                send_packet()
-            next_Seq_number = next_Seq_number + 1
-
-    if EOF & check_window_is_Acked():
-        end_of_file(start_time)
-
-    _thread.start_new_thread(receive_packet,("hi","bye"))
-
-    if ack_seq_number == base:  # moving the window range
-        base = find_min_unacked()
+serve_new_client(requested_file)

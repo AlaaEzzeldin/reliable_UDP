@@ -24,14 +24,12 @@ sliding_window_size = int(Input_list[4])
 #      ",sliding_window_size:", sliding_window_size)
 
 client_ip = '192.168.1.3'
-#client_received_file = "client_received_file"
-#received_file = open(client_received_file, "wb")
+client_received_file = "client_received_file"
+received_file = open(client_received_file, "wb")
 
 def request_file_from_server():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind(('', client_port))
-    print(server_IP, server_port)
-    print(client_port, client_ip)
     sock.settimeout(10)
     sock.sendto(requested_file.encode(), (server_IP, server_port))  # request new file
     sock.settimeout(None)

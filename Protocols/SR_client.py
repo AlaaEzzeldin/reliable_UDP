@@ -1,17 +1,15 @@
 import socket
-from client import client_ip, client_port, server_IP, server_port, requested_file, client_received_file
-from Protocols.settings import write_log, file_path
+from client import requested_file, client_received_file, request_file_from_server
+from Protocols.settings import write_log
 import utility
 import time
 
 # make a file request
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind(('', client_port))
-sock.sendto(requested_file.encode(), (server_IP, server_port))  # request new file
+sock = request_file_from_server()
 
 
 event = "".join(('Client:   client requested the file:', requested_file, "\n"))
-# write_log(event)
+write_log(event)
 received_file = open(client_received_file, "ab")
 EOF =0
 # receiving data
@@ -19,7 +17,7 @@ EOF =0
 
 while 1:
     received_packet, server_address = sock.recvfrom(512)
-    if received_packet == "":
+    if received_packet == b'11111eof1111':
         received_file.close()
         write_log("all the file has been received ^___^")
         exit(0)

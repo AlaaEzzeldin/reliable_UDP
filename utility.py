@@ -42,11 +42,11 @@ def expected_seqNumber(expected_seq, received_seq):
 
 
 def end_of_file(start_time):
-        print("End OF File")
-        end_time = time.time()
-        exec_time = end_time - start_time
-        print("Execution time= ", str(exec_time), "secs")
-        exit(0)
+    print("End OF File")
+    end_time = time.time()
+    exec_time = end_time - start_time
+    print("Execution time= ", str(exec_time), "secs")
+    exit(0)
 
 
 class Packet(object):
@@ -93,4 +93,44 @@ def get_checksum_client(data):
     return sum
 
 
+def check_window_is_Acked():
+    for i in range(len(Buffer_list)):
+        if Buffer_list[i]["status"] == "unacked":
+            return False
+        else:
+            return True
+    return False
+
+
+def find_min_unacked(Seq_number):
+    for i in range(len(Buffer_list)):
+        if Buffer_list[i]["status"] == "unacked":  # if there exist unacked datagrams in the window
+            smallest_unacked = Buffer_list[i]["seq_number"]
+        else:  # all datagrams in the window are acked
+            smallest_unacked = Seq_number
+
+        # print("smallest=", smallest_unacked)
+        return int(smallest_unacked)
+
+
+def find_if_un_ack(Seq_number, n):
+    i = Seq_number
+    unacked = []
+    print(i,len(Buffer_list))
+    while i < i + n & len(Buffer_list[i])!= 0:
+        print((Buffer_list[i]))
+        if Buffer_list[i]["status"] == "unacked":  # if there exist unacked datagrams in the window
+            unacked[i] = Buffer_list[i]
+            i+=1
+
+    return unacked
+
+
+def mark_as_packed(seq_number):
+    for i in range(len(Buffer_list)):
+        if seq_number == Buffer_list[i]["seq_number"]:
+            Buffer_list[i]["status"] = "acked"
+
+
 Buffer_list = []
+unacked = []
